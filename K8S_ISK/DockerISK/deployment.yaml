@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shutter-island-deployment
+  labels:
+    app: shutter-island
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: shutter-island
+  template:
+    metadata:
+      labels:
+        app: shutter-island
+    spec:
+      containers:
+        - name: shutter-island-container
+          image: shutter-island:v1
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 5000
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 5000
+            initialDelaySeconds: 10
+            periodSeconds: 30
